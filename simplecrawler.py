@@ -3,7 +3,7 @@ from urllib.request import urlopen, Request
 from urllib.robotparser import RobotFileParser
 from urllib.parse import urlparse
 from urllib import error
-import os
+import os, sys
 
 robots = "robots.txt"
 avoided_extensions = (".pdf", ".xml")
@@ -58,7 +58,7 @@ class Crawler():
             if not l:
                 continue
 
-            l, parsed, extension = Crawler.clean_url(l)
+            l, parsed, extension = Crawler.clean_url(l, url)
 
             # Check if link has not been visited, is about to be visited or is excluded.
             if l in self.queue or l in self.visited or l in self.excluded:
@@ -87,13 +87,13 @@ class Crawler():
             self.queue.add(l)
 
     @staticmethod
-    def clean_url(url):
+    def clean_url(url, top_domain):
             if url.startswith('/'):
-                url = "http://" + url.netloc + url
+                url = "http://" + top_domain.netloc + url
             elif url.startswith("#"):
-                url = "http://" + url.netloc + url.path + url
+                url = "http://" + top_domain.netloc + top_domain.path + url
             elif not url.startswith("http"):
-                url = "http://" + url.netloc + "/" + url
+                url = "http://" + top_domain.netloc + "/" + url
 
             if "#" in url:
                 url = url[:url.index("#")]
@@ -103,5 +103,10 @@ class Crawler():
 
             return url, parsed, extension
 
-c = Crawler("http://gocardless.com")
-c.start()
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Format: python simplecrawler.py <domain>")
+    else:
+        domain = sys.argv[1]
+        c = Crawler(domain)
+        c.start()
