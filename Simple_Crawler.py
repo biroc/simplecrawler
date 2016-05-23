@@ -9,12 +9,19 @@ class SimpleCrawler(Thread):
 
     def __init__(self, no_crawlers=10, domain=""):
         Thread.__init__(self)
+        # Number of workers
         self.no_crawlers = no_crawlers
+        # Multi-threaded priority queue to schedule crawling.
         self.queue = Queue()
+        # Keep a set of visited urls to avoid recursive/ duplicate crawling
         self.visited_urls = set()
+        # Keep a set of excluded urls.
+        self.excluded = set()
+        # Lock used to synchronize access to visited and exlucded sets/
         self.mutex = Lock()
         self.crawlers = []
-        self.excluded = set()
+
+        # Check if domain can be parsed and if robots.txt is present.
         self.domain = domain
         try:
             self.target_domain = urlparse(domain).netloc
