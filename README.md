@@ -10,18 +10,18 @@ By default it also ignores .pdf and .xml extension.
 
 Clone the repository and install dependencies (preferably in a [virtualenv](https://virtualenvwrapper.readthedocs.io)) :
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## Usage
 
 ```bash
-python3 Simple_Crawler.py <domain_to_crawl>
+python3 crawl.py <domain_to_crawl>
 ```
 
 Ouputting to a file:
 ```bash
-python3 Simple_Crawler.py <domain_to_crawl> > out.txt
+python3 crawl.py <domain_to_crawl> > out.txt
 ```
 Results will be in the following json format:
 

@@ -2,7 +2,7 @@ import unittest
 from URLHelper import valid_url, clean_url
 from urllib.parse import urlparse
 
-class URLTestCase(unittest.TestCase):
+class ValidateURLTestCase(unittest.TestCase):
     def setUp(self):
         self.scheme_url = urlparse('mailto:somemail@gmail.com')
         self.domain_url = urlparse('http://www.facebook.com')
@@ -16,4 +16,3 @@ class URLTestCase(unittest.TestCase):
 
     def test_extension(self):
         self.assertFalse(valid_url(self.extension_url,'somepage.com'))
-

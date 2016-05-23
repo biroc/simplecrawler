@@ -63,11 +63,3 @@ class SimpleCrawler(Thread):
         # Wait for all threads to exit
         for t in self.crawlers:
             t.join()
-
-
-if __name__ == "__main__":
-    domain = sys.argv[1]
-    c = SimpleCrawler(domain=domain)
-    c.start()
-    c.join()
-    # Done
