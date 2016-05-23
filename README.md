@@ -53,7 +53,7 @@ Results will be in the following json format:
 
 ## Design decisions
 
-* Multi-threaded. Basic idea is that workers feed URLs to a multi-threaded priority queue which 'schedules' them to be parsed. A For a quick implementation this is a relatively good choice for performance, as you don't have to wait for a result to continue crawling. The number of crawlers can be given at initialization.
+* Multi-threaded. Basic idea is that workers feed URLs to a multi-threaded priority queue which 'schedules' them to be parsed. For a quick implementation this is a relatively good choice for performance, as you don't have to wait for a result to continue crawling. The number of crawlers can be set at initialization.
 
 * Compliant with robots.txt.
 
