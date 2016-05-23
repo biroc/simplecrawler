@@ -3,13 +3,16 @@ from Crawler import Crawler
 from queue import Queue
 from urllib.parse import urlparse
 from urllib.robotparser import RobotFileParser
-import sys
+from urllib import error
+
 
 class SimpleCrawler(Thread):
 
-    def __init__(self, no_crawlers=10, domain=""):
+    def __init__(self, domain, no_crawlers=10):
         Thread.__init__(self)
-        # Number of workers
+        # Set number of workers
+        if no_crawlers < 1:
+            raise ValueError("Must have at least 1 crawler")
         self.no_crawlers = no_crawlers
         # Multi-threaded priority queue to schedule crawling.
         self.queue = Queue()
@@ -22,11 +25,13 @@ class SimpleCrawler(Thread):
         self.crawlers = []
 
         # Check if domain can be parsed and if robots.txt is present.
+        if not domain:
+            raise ValueError("Please provide a seed URL to crawl.")
         self.domain = domain
         try:
             self.target_domain = urlparse(domain).netloc
         except:
-            raise Exception('Invalid url provided.')
+            raise ValueError("Incorrect URL")
         self.set_robot_parser()
         self.queue.put(self.domain)
         self.visited_urls.add(self.domain)
@@ -41,17 +46,19 @@ class SimpleCrawler(Thread):
         self.robotparser = RobotFileParser()
         try:
             self.robotparser.set_url(self.domain + "robots.txt")
-        except:
-            raise Exception('Invalid url or no robots.txt exists.')
+        except Exception as e:
+            raise ValueError("Incorrect URL or no robots.txt exists.")
 
         try:
             self.robotparser.read()
-        except:
+        except error.URLError:
             self.robotparser = None
-            raise Exception('Invalid url or no robots.txt exists.')
+            raise ValueError("Incorrect URL")
+        except Exception as ex:
+            self.robotparser = None
+            raise ValueError("Incorrect URL or no robots.txt exists.")
 
     def run(self):
-
         # Spawn threads and start crawling.
         for i in range(self.no_crawlers):
             crawler = Crawler(i, self.queue, self.visited_urls, self.mutex, self.excluded, self.target_domain, self.robotparser)

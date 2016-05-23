@@ -4,8 +4,6 @@ from threading import Thread
 from bs4 import BeautifulSoup
 from urllib.request import urlopen, Request
 from urllib.parse import urlparse
-from urllib import error
-from timeit import default_timer as timer
 
 
 class Crawler(Thread):
