@@ -43,7 +43,7 @@ class Crawler(Thread):
                     l, parsed, extension = clean_url(l, url)
 
                     # Validate url.
-                    if not valid_url(parsed, extension, self.target_domain):
+                    if not valid_url(parsed, self.target_domain):
                         continue
 
                     # Acquire mutex lock for this thread.

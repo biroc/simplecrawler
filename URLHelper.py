@@ -26,9 +26,10 @@ def clean_url(url, top_domain):
     return url, parsed, extension
 
 
-def valid_url(parsed_url, extension, top_domain):
+def valid_url(parsed_url, top_domain):
     """
     Validate if a given URL should be further crawled.
+    'top_domain' is the netloc of the seed domain.
     """
     # Ignore irrelevant links.
     if parsed_url.scheme in ('mailto', 'tel', 'javascript'):
@@ -38,6 +39,7 @@ def valid_url(parsed_url, extension, top_domain):
     if parsed_url.netloc != top_domain:
         return False
 
+    extension = os.path.splitext(parsed_url.path)[1]
     # Ignore predefined extensions.
     if extension in avoided_extensions:
         return False
