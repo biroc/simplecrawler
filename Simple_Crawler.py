@@ -25,6 +25,10 @@ class SimpleCrawler(Thread):
         self.visited_urls.add(self.domain)
 
     def set_robot_parser(self):
+        """
+        Given a domain tries to search for /robots.txt and identify which urls should
+        not be visited by the crawler.
+        """
         if self.domain[-1] != '/':
             self.domain += '/'
         self.robotparser = RobotFileParser()
@@ -36,9 +40,12 @@ class SimpleCrawler(Thread):
         try:
             self.robotparser.read()
         except:
-            return
+            self.robotparser = None
+            raise Exception('Invalid url or no robots.txt exists.')
 
     def run(self):
+
+        # Spawn threads and start crawling.
         for i in range(self.no_crawlers):
             crawler = Crawler(i, self.queue, self.visited_urls, self.mutex, self.excluded, self.target_domain, self.robotparser)
             self.crawlers.append(crawler)

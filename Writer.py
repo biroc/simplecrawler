@@ -1,5 +1,6 @@
 import json
 
+
 def output(url, links, assets):
     """
     Given a page, save it as a json in the sitemap file.
