@@ -9,7 +9,7 @@ from timeit import default_timer as timer
 avoided_extensions = (".pdf", ".xml")
 
 class Crawler(Thread):
-    def __init__(self, crawlerID, queue, visited, mutex, excluded, target_domain, robotparser=None, crawls_done=0):
+    def __init__(self, crawlerID, queue, visited, mutex, excluded, target_domain, robotparser=None):
         Thread.__init__(self)
         self.crawlerID = crawlerID
         self.queue = queue
@@ -18,7 +18,6 @@ class Crawler(Thread):
         self.excluded = excluded
         self.target_domain = target_domain
         self.robotparser = robotparser
-        self.crawls_done = crawls_done
 
     def run(self):
         current = self.queue.get()

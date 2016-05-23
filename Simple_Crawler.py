@@ -16,7 +16,6 @@ class SimpleCrawler(Thread):
         self.crawlers = []
         self.excluded = set()
         self.domain = domain
-        self.no_crawls_done = 0
         try:
             self.target_domain = urlparse(domain).netloc
         except:
@@ -41,7 +40,7 @@ class SimpleCrawler(Thread):
 
     def run(self):
         for i in range(self.no_crawlers):
-            crawler = Crawler(i, self.queue, self.visited_urls, self.mutex, self.excluded, self.target_domain, self.robotparser, self.no_crawls_done)
+            crawler = Crawler(i, self.queue, self.visited_urls, self.mutex, self.excluded, self.target_domain, self.robotparser)
             self.crawlers.append(crawler)
             crawler.start()
 
