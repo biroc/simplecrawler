@@ -44,15 +44,18 @@ class SimpleCrawler(Thread):
             self.crawlers.append(crawler)
             crawler.start()
 
+        # Wait for all crawlers to finish.
         self.queue.join()
-        print("initial finish")
+
+        # Notify all crawlers to stop.
         for i in range(self.no_crawlers):
             self.queue.put(None)
 
         self.queue.join()
+
+        # Wait for all threads to exit
         for t in self.crawlers:
             t.join()
-        print("Finished")
 
 
 if __name__ == "__main__":
@@ -60,4 +63,4 @@ if __name__ == "__main__":
     c = SimpleCrawler(domain=domain)
     c.start()
     c.join()
-    print("Done")
+    # Done
